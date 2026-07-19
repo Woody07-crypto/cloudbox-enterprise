@@ -1,0 +1,24 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+terraform.tfvars
+*.tfvars
+tfplan
+*.tfplan
+
+# Lambda packages
+lambda/**/*.zip
+
+# Node
+node_modules/
+
+# Environment
+.env
+.env.*
+
+# VS Code
+.vscode/
+
+# Evidencias locales
+evidencias/
