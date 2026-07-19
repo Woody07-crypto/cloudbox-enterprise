@@ -41,14 +41,21 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
+      - name: Terraform Init
+        run: terraform init -input=false
+
       - name: Compilar Frontend
         working-directory: frontend
         run: |
+          cat > .env.production <<EOF
+          VITE_API_URL=$(terraform -chdir=.. output -raw api_url)
+          VITE_USER_POOL_ID=$(terraform -chdir=.. output -raw user_pool_id)
+          VITE_CLIENT_ID=$(terraform -chdir=.. output -raw app_client_id)
+          VITE_REGION=$(terraform -chdir=.. output -raw region)
+          VITE_API_KEY=$(terraform -chdir=.. output -raw api_key)
+          EOF
           npm ci
           npm run build
-
-      - name: Terraform Init
-        run: terraform init -input=false
 
       - name: Terraform Format
         run: terraform fmt -check -recursive
